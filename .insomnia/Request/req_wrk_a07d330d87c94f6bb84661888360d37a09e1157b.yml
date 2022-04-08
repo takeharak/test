@@ -1,0 +1,21 @@
+_id: req_wrk_a07d330d87c94f6bb84661888360d37a09e1157b
+type: Request
+parentId: wrk_a07d330d87c94f6bb84661888360d37a
+modified: 1649403523548
+created: 1649403523548
+url: "{{ base_url }}/pets"
+name: Create a pet
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1649403523548
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
