@@ -6,7 +6,7 @@
   },
   "rules": {
     "preset-ja-technical-writing": {
-        "no-exclamation-question-mark": {
+      "no-exclamation-question-mark": {
         "allowFullWidthExclamation": true,
         "allowFullWidthQuestion": true
       }
