@@ -1,7 +1,7 @@
 name: reviewdog
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
 jobs:
   prettier:
     name: runner / prettier
@@ -60,3 +60,15 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           fail_on_error: true
+  on-success:
+    name: runner / auto-merge
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    needs: [ prettier, textlint ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable auto-merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
