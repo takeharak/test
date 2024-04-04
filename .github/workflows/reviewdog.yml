@@ -63,7 +63,6 @@ jobs:
   on-success:
     name: runner / auto-merge
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     needs: [ prettier, textlint ]
     steps:
       - uses: actions/checkout@v4
