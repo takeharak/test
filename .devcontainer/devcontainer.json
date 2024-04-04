@@ -1,0 +1,63 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+	"name": "Debian",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "20"
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"editor.renderControlCharacters": true,
+				"editor.renderWhitespace": "all",
+				"extensions.ignoreRecommendations": true,
+				"code-eol.crlfCharacter": "↵",
+				"code-eol.decorateBeforeEol": true,
+				"code-eol.highlightExtraWhitespace": true,
+				"code-eol.highlightNonDefault": true,
+				"code-eol.newlineCharacter": "↓",
+				"code-eol.returnCharacter": "←",
+				"prettier.configPath": ".prettierrc",
+				"prettier.ignorePath": ".prettierignore",
+				"prettier.prettierPath": "./node_modules/prettier",
+				"prettier.requireConfig": true,
+				"prettier.semi": false,
+				"prettier.singleQuote": true
+			},
+
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"eamodio.gitlens",
+				"esbenp.prettier-vscode",
+				"medo64.render-crlf"
+			]
+		}
+	},
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": ".devcontainer/postcreate.sh",
+
+	"remoteEnv": {
+		"EDITOR": "code --wait"
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
