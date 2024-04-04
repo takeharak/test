@@ -30,6 +30,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
+          evel: warning
           fail_on_error: true
   textlint:
     name: runner / textlint
@@ -66,7 +67,7 @@ jobs:
     needs: [ prettier, textlint ]
     steps:
       - uses: actions/checkout@v4
-      - name: Enable auto-merge
+      - name: Enable auto-merge  
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
