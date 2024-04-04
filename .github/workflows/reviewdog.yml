@@ -3,15 +3,15 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  textlint:
-    name: runner / textlint
+  prettier:
+    name: runner / prettier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: "npm"
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash
@@ -31,9 +31,44 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           fail_on_error: true
+  textlint:
+    name: runner / textlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Clean install
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
       - name: textlint-github-pr-review
         uses: tsuyoshicho/action-textlint@v3
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           fail_on_error: true
+  on-success:
+    name: runner / auto-merge
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    needs: [ prettier, textlint ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable auto-merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
